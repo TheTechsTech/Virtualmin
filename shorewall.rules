@@ -1,0 +1,35 @@
+##############################################################################################################################################################
+#ACTION SOURCE  DEST    PROTO   DPORT   SPORT   ORIGDEST    RATE    USER    MARK    CONNLIMIT   TIME    HEADERS SWITCH  HELPER
+# Permit all ICMP traffic FROM the firewall TO the net zone
+ACCEPT  $FW net
+#Allow outgoing TCP ports
+ACCEPT $FW net tcp 21,22,25,53,80,110,143,443,587,993,995
+ACCEPT $FW net icmp 8
+ACCEPT $FW net icmp 0
+ACCEPT $FW net icmp 11
+ACCEPT $FW net icmp 3
+#Allow outgoing UDP ports
+ACCEPT $FW net udp 53,500,4500
+LOG:info $FW net all
+LOG:notice:TCP_OUT $FW net tcp - - - 30/min
+LOG:notice:UDP_OUT $FW net udp - - - 30/min
+LOG:notice:ICMP_OUT $FW net icmp - - - 30/min
+DROP:info $FW net all
+#Allow incoming TCP ports
+ACCEPT net $FW tcp 21,25,53,80,110,143,443,465,587,993,995,2122,10000,20000
+ACCEPT net $FW icmp 8 - - 1/sec
+ACCEPT net $FW icmp 0 - - 1/sec
+ACCEPT net $FW icmp 11
+ACCEPT net $FW icmp 3
+#Allow incoming UDP ports
+ACCEPT net $FW udp 53,500,4500
+#ssh on port 2122
+DROP:info:TRAP net $FW tcp   22
+#Commonly blocked ports
+DROP net $FW udp   67,68,111,113,135,139,445,513,520
+DROP net $FW tcp   67,68,111,113,135,139,445,513,520
+LOG:notice:TCP_IN net $FW tcp - - - 30/min
+LOG:notice:UDP_IN net $FW udp - - - 30/min
+LOG:notice:ICMP_IN net $FW icmp - - - 30/min
+DROP:info net $FW all
+
