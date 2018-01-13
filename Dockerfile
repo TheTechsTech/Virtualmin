@@ -9,8 +9,7 @@ RUN rm  /etc/apt/apt.conf.d/docker-gzip-indexes \
 # Fixes issue with running systemD inside docker builds 
 # From https://github.com/gdraheim/docker-systemctl-replacement
 COPY systemctl.py /usr/bin/systemctl.py
-RUN cp -f /usr/bin/systemctl /usr/bin/systemctl.original \
-    && chmod +x /usr/bin/systemctl.py \
+RUN chmod +x /usr/bin/systemctl.py \
     && cp -f /usr/bin/systemctl.py /usr/bin/systemctl
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y -f install wget perl apt-utils \
