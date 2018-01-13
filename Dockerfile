@@ -70,7 +70,7 @@ RUN apt-get update \
     && sed -i "s@#Port 22@Port 2122@" /etc/ssh/sshd_config \
     && sed -i 's/SetHandler/#SetHandler/' /etc/apache2/mods-available/php7.0.conf
     
-RUN systemctl.original enable shorewall.service rsyslog.service sshd.service mysql.service fail2ban.service dovecot.service cron.service bind9.service opendkim.service postfix.service apache2.service postgrey.service proftpd.service usermin.service webmin.service \
+RUN systemctl enable shorewall.service rsyslog.service sshd.service mysql.service fail2ban.service dovecot.service cron.service bind9.service opendkim.service postfix.service apache2.service postgrey.service proftpd.service usermin.service webmin.service \
     && echo "root:virtualmin" | chpasswd
     
 EXPOSE 80 443 21 25 110 143 465 587 993 995 2122 10000 20000 53/udp 53/tcp
